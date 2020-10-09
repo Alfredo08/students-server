@@ -22,6 +22,12 @@ const StudentsService = {
                 .where({"id" : studentId})
                 .delete()
 
+    },
+    studentNameUpdate( db, studentId, updatedFields ){
+        return db( 'student' )
+                .update( updatedFields )
+                .where( {id : studentId} )
+                .returning( '*' );
     }
 }
 

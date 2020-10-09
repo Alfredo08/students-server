@@ -68,6 +68,28 @@ app.delete( "/api/students/delete/:studentId", (req, res) => {
         .then( () => {
             return res.status( 204 ).end();
         });
+});
+
+app.patch( "/api/students/update/:studentId", jsonParser, ( req, res ) => {
+    const studentId = Number( req.params.studentId );
+    
+    const updatedFields = {
+        name : req.body.name
+    };
+
+    StudentsService
+        .studentNameUpdate( db, studentId, updatedFields )
+        .then( result => {
+
+            if( result.length === 0 ){
+                res.statusMessage = "That student id was not found!";
+                return res.status( 404 ).end();
+            }
+            return res.status( 202 ).json( result );
+        })
+        .catch( err => {
+            return res.status( 404 ).end();
+        })
 })
 
 app.listen( 8080, () => {
